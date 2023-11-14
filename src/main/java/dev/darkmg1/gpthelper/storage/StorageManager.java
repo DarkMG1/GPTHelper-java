@@ -62,7 +62,6 @@ public class StorageManager {
 	private boolean loadConfiguration(String path) {
 		configurationFile = new File(path, "config.json");
 
-		// Ensure parent directory exists
 		if (!configurationFile.getParentFile().exists() && !configurationFile.getParentFile().mkdirs()) {
 			System.out.println(("Failed to create directory " + configurationFile.getParentFile()));
 		}
@@ -106,7 +105,6 @@ public class StorageManager {
 	private boolean loadUserList(String path) {
 		usersFile = new File(path, "users.json");
 
-		// Ensure parent directory exists
 		if (!usersFile.getParentFile().exists() && !usersFile.getParentFile().mkdirs()) {
 			System.out.println(("Failed to create directory " + usersFile.getParentFile()));
 		}
@@ -148,7 +146,6 @@ public class StorageManager {
 	private boolean loadRequestsMap(String path) {
 		requestsFile = new File(path, "requests.json");
 
-		// Ensure parent directory exists
 		if (!requestsFile.getParentFile().exists() && !requestsFile.getParentFile().mkdirs()) {
 			System.out.println(("Failed to create directory " + requestsFile.getParentFile()));
 		}
@@ -188,7 +185,6 @@ public class StorageManager {
 	}
 
 	public void saveRequestsFile() {
-
 		try (FileWriter writer = new FileWriter(requestsFile)) {
 			writer.write(GPTHelper.getPrettyGson().toJson(requests, (new TypeToken<ConcurrentHashMap<Long, GPTRequest>>() {
 			}).getType()));
@@ -209,7 +205,6 @@ public class StorageManager {
 	}
 
 	public void saveUsersFile() {
-		System.out.println("write");
 		try (FileWriter writer = new FileWriter(usersFile)) {
 			writer.write(GPTHelper.getPrettyGson().toJson(gptUsers, (new TypeToken<List<GPTUser>>() {
 			}).getType()));

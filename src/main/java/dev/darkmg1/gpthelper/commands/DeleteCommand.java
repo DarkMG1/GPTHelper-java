@@ -4,6 +4,7 @@ import dev.darkmg1.gpthelper.GPTHelper;
 import dev.darkmg1.gpthelper.storage.GPTUser;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -32,7 +33,10 @@ public class DeleteCommand extends ListenerAdapter {
 			GPTHelper.getStorageManager().saveUsersFile();
 			GPTHelper.getStorageManager().getRequests().remove(user.getIdLong());
 			GPTHelper.getStorageManager().saveRequestsFile();
-			e.getJDA().getGuildChannelById(gptUser.channelId()).delete().queue();
+			TextChannel textChannel = e.getJDA().getTextChannelById(gptUser.channelId());
+			if (textChannel != null) {
+				textChannel.delete().queue();
+			}
 			e.getHook().sendMessageEmbeds(
 					GPTHelper.getBaseEmbedBuilder()
 							.setTitle("Successfully Deleted User")
