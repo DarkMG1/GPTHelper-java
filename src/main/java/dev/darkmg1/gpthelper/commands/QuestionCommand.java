@@ -1,5 +1,6 @@
 package dev.darkmg1.gpthelper.commands;
 
+import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
@@ -105,9 +106,18 @@ public class QuestionCommand extends ListenerAdapter {
 						.maxTokens(tokens)
 						.build();
 			}
-			ChatMessage responseMessage = GPTHelper.getOpenAiService().createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
-			int inputTokens = TikTokensUtil.tokens(TikTokensUtil.ModelEnum.GPT_4.getName(), question);
-			int outputTokens = TikTokensUtil.tokens(TikTokensUtil.ModelEnum.GPT_4.getName(), responseMessage.getContent());
+			ChatMessage responseMessage;
+			try {
+				responseMessage = GPTHelper.getOpenAiService().createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
+			} catch (OpenAiHttpException exception) {
+				e.getHook().sendMessageEmbeds(
+						GPTHelper.getErrorEmbedBuilder("OpenAI Error", exception.getMessage())
+								.build()
+				).queue();
+				return;
+			}
+			int inputTokens = TikTokensUtil.tokens(TikTokensUtil.ModelEnum.GPT_4_1106_preview.getName(), question);
+			int outputTokens = TikTokensUtil.tokens(TikTokensUtil.ModelEnum.GPT_4_1106_preview.getName(), responseMessage.getContent());
 			GPTHelper.getStorageManager().addRequest(e.getUser(), new GPTRequest(model, inputTokens, outputTokens));
 			if (responseMessage.getContent().length() > 2000) {
 				e.getHook().sendMessage("Question: \n" + question).queue();

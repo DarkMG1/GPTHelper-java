@@ -1,5 +1,6 @@
 package dev.darkmg1.gpthelper.commands;
 
+import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.image.Image;
 import com.theokanning.openai.image.ImageResult;
@@ -29,7 +30,16 @@ public class DallECommand extends ListenerAdapter {
 					.style(styleString)
 					.responseFormat("url")
 					.build();
-			ImageResult result = GPTHelper.getOpenAiService().createImage(createImageRequest);
+			ImageResult result;
+			try {
+				result = GPTHelper.getOpenAiService().createImage(createImageRequest);
+			} catch (OpenAiHttpException exception) {
+				e.getHook().sendMessageEmbeds(
+						GPTHelper.getErrorEmbedBuilder("OpenAI Error", exception.getMessage())
+								.build()
+				).queue();
+				return;
+			}
 			for (Image image : result.getData()) {
 				e.getHook().sendMessage(image.getUrl()).queue();
 			}
