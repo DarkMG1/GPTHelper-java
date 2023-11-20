@@ -78,7 +78,7 @@ public class SetupCommand extends ListenerAdapter {
 							.setDescription("Welcome to GPTHelper. To use the bot, simply use the /question command with the question you want to ask!\n You can specify models as well as tokens to tune your response to your liking. If you want to know what models are available, use the /models command.\n If you want to know how much you owe, use the /billing command.")
 							.setColor(Color.BLACK)
 							.build()
-			).queue(message-> message.pin().queue(), failure -> e.getHook().sendMessageEmbeds(
+			).queue(message -> message.pin().queue(), failure -> e.getHook().sendMessageEmbeds(
 					GPTHelper.getErrorEmbedBuilder("Error", "Error pinning message.")
 							.build()
 			).queue());
