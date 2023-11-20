@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class QuestionCommand extends ListenerAdapter {
 
@@ -130,6 +131,12 @@ public class QuestionCommand extends ListenerAdapter {
 				} else {
 					e.getHook().sendMessage("**Question**: \n" + question + "\n\n**GPT Response**: \n" + responseMessage.getContent()).queue();
 				}
+			}).orTimeout(90, TimeUnit.SECONDS).exceptionally(throwable -> {
+				e.getHook().sendMessageEmbeds(
+						GPTHelper.getErrorEmbedBuilder("Timeout", "The request timed out. Please try again.")
+								.build()
+				).queue();
+				return null;
 			});
 		}
 	}
