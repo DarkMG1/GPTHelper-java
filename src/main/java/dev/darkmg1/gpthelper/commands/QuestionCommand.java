@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class QuestionCommand extends ListenerAdapter {
 
@@ -132,10 +133,18 @@ public class QuestionCommand extends ListenerAdapter {
 					e.getHook().sendMessage("**Question**: \n" + question + "\n\n**GPT Response**: \n" + responseMessage.getContent()).queue();
 				}
 			}).orTimeout(GPTHelper.getStorageManager().getConfiguration().timeout(), TimeUnit.SECONDS).exceptionally(throwable -> {
-				e.getHook().sendMessageEmbeds(
-						GPTHelper.getErrorEmbedBuilder("Timeout", "The request timed out. Please try again.")
-								.build()
-				).queue();
+				if (throwable instanceof TimeoutException) {
+					e.getHook().sendMessageEmbeds(
+							GPTHelper.getErrorEmbedBuilder("Timeout", "The request timed out. Please try again.")
+									.build()
+					).queue();
+				} else {
+					e.getHook().sendMessageEmbeds(
+							GPTHelper.getErrorEmbedBuilder("Error", "An error occurred: " + throwable.getMessage() + ". Please try again.")
+									.build()
+					).queue();
+					throwable.printStackTrace();
+				}
 				return null;
 			});
 		}
