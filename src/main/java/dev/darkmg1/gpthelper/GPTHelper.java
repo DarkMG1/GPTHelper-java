@@ -116,7 +116,7 @@ public class GPTHelper {
 			Timer timer = new Timer();
 			timer.schedule(setupCommands, 5000);
 
-			openAiService = new OpenAiService(storageManager.getConfiguration().openAiToken(), Duration.ofSeconds(90));
+			openAiService = new OpenAiService(storageManager.getConfiguration().openAiToken(), Duration.ofSeconds(getStorageManager().getConfiguration().timeout()));
 		}
 	}
 

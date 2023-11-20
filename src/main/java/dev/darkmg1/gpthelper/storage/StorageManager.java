@@ -95,7 +95,7 @@ public class StorageManager {
 		if (loadedConfiguration != null) {
 			configuration = loadedConfiguration;
 		} else {
-			configuration = new Configuration("Placeholder", "Placeholder", 1L, 1L);
+			configuration = new Configuration("Placeholder", "Placeholder", 1L, 1L, 120);
 			saveConfigurationFile();
 		}
 		return true;

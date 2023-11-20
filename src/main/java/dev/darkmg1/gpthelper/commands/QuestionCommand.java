@@ -131,7 +131,7 @@ public class QuestionCommand extends ListenerAdapter {
 				} else {
 					e.getHook().sendMessage("**Question**: \n" + question + "\n\n**GPT Response**: \n" + responseMessage.getContent()).queue();
 				}
-			}).orTimeout(90, TimeUnit.SECONDS).exceptionally(throwable -> {
+			}).orTimeout(GPTHelper.getStorageManager().getConfiguration().timeout(), TimeUnit.SECONDS).exceptionally(throwable -> {
 				e.getHook().sendMessageEmbeds(
 						GPTHelper.getErrorEmbedBuilder("Timeout", "The request timed out. Please try again.")
 								.build()
