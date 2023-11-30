@@ -63,7 +63,7 @@ public class BillingCommand extends ListenerAdapter {
 								.addField("Username", user.getName(), true)
 								.addField("GPT Requests", String.valueOf(gptRequests.size()), true)
 								.addField("Input Cost", inputRounded.toPlainString(), true)
-								.addField("Output Cost", inputRounded.toPlainString(), true)
+								.addField("Output Cost", outputRounded.toPlainString(), true)
 								.addField("Total Cost", String.valueOf(totalCost), true)
 								.build()
 				).queue();
