@@ -56,6 +56,8 @@ public class BillingCommand extends ListenerAdapter {
 				BigDecimal outputRounded = new BigDecimal(outputCost).setScale(5, RoundingMode.HALF_UP);
 
 				totalCost = inputRounded.doubleValue() + outputRounded.doubleValue();
+				BigDecimal totalRounded = new BigDecimal(totalCost).setScale(5, RoundingMode.HALF_UP);
+
 				e.getHook().sendMessageEmbeds(
 						GPTHelper.getBaseEmbedBuilder()
 								.setTitle("Billing Information")
@@ -64,7 +66,7 @@ public class BillingCommand extends ListenerAdapter {
 								.addField("GPT Requests", String.valueOf(gptRequests.size()), true)
 								.addField("Input Cost", inputRounded.toPlainString(), true)
 								.addField("Output Cost", outputRounded.toPlainString(), true)
-								.addField("Total Cost", String.valueOf(totalCost), true)
+								.addField("Total Cost", totalRounded.toPlainString(), true)
 								.build()
 				).queue();
 			});
