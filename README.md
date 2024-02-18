@@ -2,6 +2,9 @@
 
 This is just a small project I made in my free time to enable people to access GPT-4 for a fraction of the monthly cost OpenAI charges.
 
+# Note
+This project has been abandoned due to the library I was using has not been updated. Instead, I am working on converting this to Python, with more features, due to OpenAI supporting Python.
+
 ## Summary
 
 1. [How it works](#how-it-works)
